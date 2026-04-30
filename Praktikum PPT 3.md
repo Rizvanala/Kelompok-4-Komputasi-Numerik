@@ -75,5 +75,59 @@ print(f"{i:>7} | {x0:>12.6f} | {x1:>12.6f} | {f_x1:>14.6f} | {x2:>14.6f} | {erro
             x1 = x2
 ```
 
+---
+
+## USER INTERFACE 
+```python
+def main():
+    print(....)
+
+    while True:
+        fungsi_input = input("Masukkan fungsi f(x) = ")
+        if fungsi_input.strip() == "":
+            print("Fungsi tidak boleh kosong. Silakan coba lagi.\n")
+            continue
+        break
+```
+
+Tempat user memberikan input. Jika user tidak memberikan input (hanya enter), maka keluar peringatan. Jika sudah ada input dari user, break akan menghentikan siklus ini dan lanjut ke baris berikutnya.
+
+
+***5 inputan user: teks fungsi, dua tebakan awal, toleransi, dan maksimal iterasi**
+```python
+try:
+        x_awal = float(input("Masukkan tebakan awal pertama (x0) : "))
+        x_kedua = float(input("Masukkan tebakan awal kedua (x1)   : "))
+        tol = float(input("Masukkan nilai toleransi (e.g. 0.0001): "))
+        maks_iter = int(input("Masukkan maksimal iterasi (e.g. 50)  : "))
+    except ValueError:
+        print("\n[ERROR] Input tidak valid! Pastikan Anda memasukkan angka...")
+        return
+```
+- Meminta user input parameter matematis
+- float(...) mengubah input teks menjadi angka desimal, dan int(...) untuk angka bulat.
+- Blok try-except ValueError digunakan untuk berjaga-jaga jika user memasukkan input huruf saat diminta memasukkan angka (ex: input kata "dua" bukan angka "2").
+
+---
+
+## FINAL EXECUTION & SIMPULAN
+```python
+sukses, hasil = metode_secant(fungsi_input, x_awal, x_kedua, tol, maks_iter)
+
+    if sukses:
+        akar, total_iterasi, nilai_fungsi = hasil
+        print("\n[KESIMPULAN - BERHASIL]")
+        # ... (Print hasil akar) ...
+    else:
+        print("\n[KESIMPULAN - GAGAL/PERINGATAN]")
+        print(hasil)
+
+if __name__ == "__main__":
+    main()
+```
+
+- sukses, hasil = ...: Menjalankan algoritma dengan data dari user. Fungsi metode_secant akan mengembalikan dua nilai: status (True/False) dan datanya.
+- Blok if sukses: Jika algoritma berjalan lancar tanpa pembagian nol atau error aneh, data hasil akan diproses (akar, total_iterasi, nilai_fungsi) lalu diprint.
+- Jika gagal (misal karena limit iterasi habis atau salah ketik rumus), program akan mencetak status peringatannya.if __name__ == "__main__"
 
 
