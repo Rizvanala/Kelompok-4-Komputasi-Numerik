@@ -1,3 +1,15 @@
+# METODE SECANT
+---
+
+
+
+
+
+
+
+
+
+
 import sympy as sp
 
 def metode_secant(fungsi_str, x0, x1, toleransi=1e-5, maks_iterasi=50):
