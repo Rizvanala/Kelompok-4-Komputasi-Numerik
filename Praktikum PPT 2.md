@@ -2,8 +2,6 @@
 
 Implementasi algoritma **Regula Falsi** (False Position Method) menggunakan Python, lengkap dengan tabel iterasi dan grafik fungsi.
 
-Dibuat untuk memenuhi tugas **Praktikum 1 - Metode Numerik**.
-
 ---
 
 ## Apa itu Metode Regula Falsi?
