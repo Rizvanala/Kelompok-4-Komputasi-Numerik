@@ -142,23 +142,20 @@ Iter             a             b       c (akar)          f(c)           Error
 
 > 📷
 
->
+>  <img width="1085" height="446" alt="Screenshot 2026-04-30 211833" src="https://github.com/user-attachments/assets/f5f314c6-7fff-47f0-85b2-8f902638e5c7" />
+
 
 ---
+Cara Menjalankan
 
-## Cara Menjalankan
+Program ini dijalankan menggunakan Google Colab — tidak perlu install apapun di komputer.
 
-Install dulu library-nya:
-```bash
-pip install matplotlib numpy
-```
+Buka https://colab.research.google.com
+Klik "+ New notebook"
+buat kodenya di cell
+Klik tombol ▶️ atau tekan Ctrl + Enter
 
-Lalu jalankan:
-```bash
-python regula_falsi.py
-```
-
-Grafik otomatis tersimpan sebagai `regula_falsi_grafik.png` di folder yang sama.
+Grafik akan otomatis tampil di bawah cell, dan tersimpan sebagai regula_falsi_grafik.png.
 
 ---
 
