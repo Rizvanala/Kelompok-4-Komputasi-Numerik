@@ -1,7 +1,9 @@
-# Kelompok-4-Komputasi-Numerik
+# Praktikum Komputasi Numerik Kelas E
+
+# Kelompok-4
 Berisikan Paparan  tentang kode dari praktikum Komputasi  numerik , mulai dari kodenya itu sendiri, penjelasan, serta bukti kode tsb bekerja.
 |    NRP     |      Name      |
 | :--------: | :------------: |
-| 5025251219 | Farrel Fahrezi R |
-| 5025251219 | |
-| 5025251000 | Student 3 Name |
+| 5025251206 | Rexa Matutu Harsaputra |
+| 5025251219 | Farrel Fahrezi Rizvanala |
+| 5025251221 | Rachmat Ahzadel |
