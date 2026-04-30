@@ -49,7 +49,7 @@ Fungsi utama yang menjalankan metode Regula Falsi. Menerima input: batas kiri `a
 if f(a) * f(b) >= 0:
     raise ValueError(...)
 ```
-Memastikan `f(a)` dan `f(b)` berbeda tanda — syarat wajib agar metode bisa berjalan.
+Memastikan `f(a)` dan `f(b)` berbeda tanda , syarat wajib supaya metode inj bisa berjalan.
 
 **Perhitungan titik c:**
 ```python
@@ -81,8 +81,8 @@ def buat_grafik(a_awal, b_awal, akar, tabel):
 ```
 Membuat dua grafik sekaligus menggunakan `matplotlib`:
 
-- **Grafik kiri** — menampilkan kurva `f(x)`, letak akar, interval awal, dan titik-titik `c` dari setiap iterasi.
-- **Grafik kanan** — menampilkan grafik konvergensi error dalam skala logaritmik, sehingga penurunan error terlihat jelas.
+- **Grafik kiri** = menampilkan kurva `f(x)`, letak akar, interval awal, dan titik-titik `c` dari setiap iterasi.
+- **Grafik kanan** = menampilkan grafik konvergensi error dalam skala logaritmik, sehingga penurunan error terlihat jelas.
 
 ```python
 plt.savefig('regula_falsi_grafik.png', dpi=150, bbox_inches='tight')
