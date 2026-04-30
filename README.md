@@ -14,3 +14,5 @@ Berisikan Paparan  tentang kode dari praktikum Komputasi  numerik , mulai dari k
 | 5025251221 | Rachmat Ahzadel |
 
 ---
+
+Praktikum PPT 2.md
