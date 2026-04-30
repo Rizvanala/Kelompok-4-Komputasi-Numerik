@@ -117,7 +117,7 @@ sukses, hasil = metode_secant(fungsi_input, x_awal, x_kedua, tol, maks_iter)
     if sukses:
         akar, total_iterasi, nilai_fungsi = hasil
         print("\n[KESIMPULAN - BERHASIL]")
-        # ... (Print hasil akar) ...
+
     else:
         print("\n[KESIMPULAN - GAGAL/PERINGATAN]")
         print(hasil)
