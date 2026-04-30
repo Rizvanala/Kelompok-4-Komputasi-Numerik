@@ -111,36 +111,12 @@ Memanggil fungsi Regula Falsi lalu langsung menampilkan grafiknya.
 
 ## Output Program
 
-### Tabel Iterasi (Terminal)
-
-```
-╔══════════════════════════════════════╗
-║   METODE REGULA FALSI                ║
-║   Praktikum Metode Numerik           ║
-╚══════════════════════════════════════╝
-
-  Fungsi    : f(x) = x³ - x - 2
-  Interval  : [1, 2]
-  Toleransi : 0.0001
-  f(1) = -2.000000
-  f(2) =  4.000000
-
-=====================================================================================
-Iter             a             b       c (akar)          f(c)           Error
-=====================================================================================
-   1      1.000000      2.000000    1.33333333    -0.96296296          -
-   2      1.333333      2.000000    1.44827586    -0.39060811    1.149426e-01
-   3      1.448276      2.000000    1.49691218    -0.13909523    4.863632e-02
-   ...
-✓ Konvergen setelah 8 iterasi.
-  Akar ≈ 1.52137971
-  f(akar) = 0.0000000412
-  Error   = 4.32e-05
-```
-
-### Screenshot Grafik
+### Screenshot Output & Grafik
 
 > 📷
+
+>  <img width="560" height="429" alt="image" src="https://github.com/user-attachments/assets/1564ed87-1494-4163-ad54-5fe941df3b8c" />
+
 
 >  <img width="1085" height="446" alt="Screenshot 2026-04-30 211833" src="https://github.com/user-attachments/assets/f5f314c6-7fff-47f0-85b2-8f902638e5c7" />
 
