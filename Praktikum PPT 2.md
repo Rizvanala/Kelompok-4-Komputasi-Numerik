@@ -49,7 +49,7 @@ Iter             a             b       c (akar)          f(c)           Error
 
 ### Screenshot Output & Grafik
 
-> 📷 *Screenshot output terminal dan grafik menyusul setelah program dijalankan*
+> 📷 
 
 >
 
