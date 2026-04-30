@@ -34,7 +34,7 @@ Mengimpor dua library utama: `numpy` untuk perhitungan numerik (linspace, array)
 def f(x):
     return x**3 - x - 2
 ```
-Ini adalah fungsi matematika yang ingin dicari akarnya. Kalau mau ganti soal, cukup ubah bagian `return`-nya.
+Ini adalah fungsi matematika yang ingin dicari akarnya. Kalau mau ganti soal, cukup ubah bagian `return`nya.
 
 ---
 
