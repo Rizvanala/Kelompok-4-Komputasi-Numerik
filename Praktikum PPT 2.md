@@ -14,7 +14,7 @@ c = b - f(b) × (b - a) / (f(b) - f(a))
 
 Di setiap iterasi, nilai `c` ini dihitung, terus dicek apakah `f(a) × f(c) < 0` atau tidak, untuk menentukan subinterval baru. Proses ini diulang sampai nilai error-nya lebih kecil dari toleransi yang sudah ditentukan (0.0001).
 
-Terakhir, saya tambahkan visualisasi grafik pakai `matplotlib` — satu grafik untuk kurva fungsinya, satu lagi untuk grafik konvergensi error-nya.
+Terakhir, saya tambahkan visualisasi grafik pakai `matplotlib` , satu grafik untuk kurva fungsinya, satu lagi untuk grafik konvergensi error-nya.
 
 ---
 
