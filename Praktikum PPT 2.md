@@ -1,6 +1,4 @@
-# Regula Falsi - Praktikum Metode Numerik
-
-Program Python untuk mencari akar persamaan menggunakan metode **Regula Falsi**, lengkap dengan tabel iterasi dan grafik fungsinya.
+# Regula Falsi 
 
 ---
 
@@ -66,7 +64,7 @@ pip install matplotlib numpy
 
 Lalu jalankan:
 ```bash
-python regula_falsi_clean.py
+python regula_falsi.py
 ```
 
 Grafik otomatis tersimpan sebagai `regula_falsi_grafik.png` di folder yang sama.
