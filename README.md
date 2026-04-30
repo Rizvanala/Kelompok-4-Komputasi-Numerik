@@ -15,6 +15,6 @@ Berisikan Paparan  tentang kode dari praktikum Komputasi  numerik , mulai dari k
 
 ---
 
-[Praktikum PPT 2 ](https://github.com/Rizvanala/Kelompok-4-Komputasi-Numerik/blob/0454360acbe598bed3b8aac370a99c58559999f1/Praktikum%20PPT%202.md)
+[Praktikum PPT 2 ](https://github.com/Rizvanala/Kelompok-4-Komputasi-Numerik/blob/main/Praktikum%20PPT%202.md)
 
-[Praktikum PPT 3 ](https://github.com/Rizvanala/Kelompok-4-Komputasi-Numerik/blob/83cafd3ff7201ce0058b08fbd709d8f89445a5db/Praktikum%20PPT%203.md)
+[Praktikum PPT 3 ]()
