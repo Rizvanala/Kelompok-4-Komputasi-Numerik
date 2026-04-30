@@ -99,7 +99,7 @@ if __name__ == "__main__":
     TOLERANSI = 0.0001
     MAKS_ITER = 50
 ```
-Bagian ini adalah titik masuk program. Di sini kita atur nilai interval, toleransi, dan maksimal iterasi. **Kalau mau ganti soal, ubah di bagian ini.**
+Di sini kita atur nilai interval, toleransi, dan maksimal iterasi. **Kalau mau ganti soal, ubah di bagian ini.*
 
 ```python
 akar, tabel = regula_falsi(A, B, TOLERANSI, MAKS_ITER)
