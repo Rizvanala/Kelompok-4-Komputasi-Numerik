@@ -1,4 +1,4 @@
-# Regula Falsi 
+# Regula Falsi
 
 ---
 
@@ -15,6 +15,97 @@ c = b - f(b) × (b - a) / (f(b) - f(a))
 Di setiap iterasi, nilai `c` ini dihitung, terus dicek apakah `f(a) × f(c) < 0` atau tidak, untuk menentukan subinterval baru. Proses ini diulang sampai nilai error-nya lebih kecil dari toleransi yang sudah ditentukan (0.0001).
 
 Terakhir, saya tambahkan visualisasi grafik pakai `matplotlib` — satu grafik untuk kurva fungsinya, satu lagi untuk grafik konvergensi error-nya.
+
+---
+
+## Penjelasan Tiap Blok Kode
+
+### 1. Import Library
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+```
+Mengimpor dua library utama: `numpy` untuk perhitungan numerik (linspace, array), dan `matplotlib` untuk membuat grafik.
+
+---
+
+### 2. Definisi Fungsi f(x)
+```python
+def f(x):
+    return x**3 - x - 2
+```
+Ini adalah fungsi matematika yang ingin dicari akarnya. Kalau mau ganti soal, cukup ubah bagian `return`-nya.
+
+---
+
+### 3. Fungsi Inti Regula Falsi
+```python
+def regula_falsi(a, b, toleransi=0.0001, maks_iterasi=50):
+```
+Fungsi utama yang menjalankan metode Regula Falsi. Menerima input: batas kiri `a`, batas kanan `b`, toleransi error, dan maksimal iterasi.
+
+**Cek syarat awal:**
+```python
+if f(a) * f(b) >= 0:
+    raise ValueError(...)
+```
+Memastikan `f(a)` dan `f(b)` berbeda tanda — syarat wajib agar metode bisa berjalan.
+
+**Perhitungan titik c:**
+```python
+c = b - fb * (b - a) / (fb - fa)
+```
+Rumus inti Regula Falsi untuk menghitung titik potong garis dengan sumbu x.
+
+**Update interval:**
+```python
+if fa * fc < 0:
+    b = c
+else:
+    a = c
+```
+Menentukan subinterval baru: kalau akar ada di kiri `c`, maka `b` digeser ke `c`, begitu sebaliknya.
+
+**Cek konvergensi:**
+```python
+if error is not None and error < toleransi:
+    return c, tabel
+```
+Iterasi berhenti ketika selisih antara `c` sekarang dan `c` sebelumnya sudah lebih kecil dari toleransi.
+
+---
+
+### 4. Fungsi Grafik
+```python
+def buat_grafik(a_awal, b_awal, akar, tabel):
+```
+Membuat dua grafik sekaligus menggunakan `matplotlib`:
+
+- **Grafik kiri** — menampilkan kurva `f(x)`, letak akar, interval awal, dan titik-titik `c` dari setiap iterasi.
+- **Grafik kanan** — menampilkan grafik konvergensi error dalam skala logaritmik, sehingga penurunan error terlihat jelas.
+
+```python
+plt.savefig('regula_falsi_grafik.png', dpi=150, bbox_inches='tight')
+```
+Grafik otomatis disimpan sebagai file PNG di folder yang sama.
+
+---
+
+### 5. Blok Utama (main)
+```python
+if __name__ == "__main__":
+    A         = 1
+    B         = 2
+    TOLERANSI = 0.0001
+    MAKS_ITER = 50
+```
+Bagian ini adalah titik masuk program. Di sini kita atur nilai interval, toleransi, dan maksimal iterasi. **Kalau mau ganti soal, ubah di bagian ini.**
+
+```python
+akar, tabel = regula_falsi(A, B, TOLERANSI, MAKS_ITER)
+buat_grafik(A, B, akar, tabel)
+```
+Memanggil fungsi Regula Falsi lalu langsung menampilkan grafiknya.
 
 ---
 
@@ -49,7 +140,7 @@ Iter             a             b       c (akar)          f(c)           Error
 
 ### Screenshot Output & Grafik
 
-> 📷 
+> 📷
 
 >
 
