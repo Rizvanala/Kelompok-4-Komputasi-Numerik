@@ -138,7 +138,7 @@ Iter             a             b       c (akar)          f(c)           Error
   Error   = 4.32e-05
 ```
 
-### Screenshot Output & Grafik
+### Screenshot Grafik
 
 > 📷
 
@@ -148,8 +148,7 @@ Iter             a             b       c (akar)          f(c)           Error
 ---
 Cara Menjalankan
 
-Program ini dijalankan menggunakan Google Colab — tidak perlu install apapun di komputer.
-
+Program ini dijalankan menggunakan Google Colab.
 Buka https://colab.research.google.com
 Klik "+ New notebook"
 buat kodenya di cell
