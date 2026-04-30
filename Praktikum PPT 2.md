@@ -50,8 +50,8 @@ Iter             a             b       c (akar)          f(c)           Error
 ### Screenshot Output & Grafik
 
 > 📷 *Screenshot output terminal dan grafik menyusul setelah program dijalankan*
+
 >
-> *(Ganti bagian ini dengan screenshot kamu — bisa drag & drop gambar langsung ke sini saat edit di GitHub)*
 
 ---
 
