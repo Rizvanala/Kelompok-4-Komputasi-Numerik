@@ -1,7 +1,7 @@
 # METODE SECANT 
 
 ---
-## langkah langkah
+## Langkah langkah
 di awali dengan menginput bentuk fungsi nya, seperti contoh  `f(x) = x^2 + 4`, kemudian input tebakan awal pertama dan ke dua, lalu input nilai toleransi dan batas maksimal dari iterasi nya
 
 kemudian di jalankan kode nya dengan menerapkan rumus metode secant
@@ -107,7 +107,7 @@ def main():
 Tempat user memberikan input. Jika user tidak memberikan input (hanya enter), maka keluar peringatan. Jika sudah ada input dari user, break akan menghentikan siklus ini dan lanjut ke baris berikutnya.
 
 
-***5 inputan user: teks fungsi, dua tebakan awal, toleransi, dan maksimal iterasi**
+**5 inputan user: teks fungsi, dua tebakan awal, toleransi, dan maksimal iterasi**
 ```python
 try:
         x_awal = float(input("Masukkan tebakan awal pertama (x0) : "))
