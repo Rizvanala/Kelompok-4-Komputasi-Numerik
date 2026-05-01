@@ -153,9 +153,7 @@ if __name__ == "__main__":
 import sympy as sp
 
 def metode_secant(fungsi_str, x0, x1, toleransi=1e-5, maks_iterasi=50):
-    """
-    Fungsi untuk mencari akar persamaan menggunakan Metode Secant.
-    """
+    
     x = sp.Symbol('x')
     
     try:
