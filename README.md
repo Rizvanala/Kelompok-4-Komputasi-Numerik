@@ -19,4 +19,4 @@ Berisikan Paparan  tentang kode dari praktikum Komputasi  numerik , mulai dari k
 
 [Praktikum PPT 3 ](https://github.com/Rizvanala/Kelompok-4-Komputasi-Numerik/blob/main/Praktikum%20PPT%203.md)
 
-[Praktikum PPT 6 ]
+[Praktikum PPT 6 ](https://github.com/Rizvanala/Kelompok-4-Komputasi-Numerik/blob/main/Praktikum%20PPT%206.md)
