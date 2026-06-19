@@ -61,7 +61,7 @@ def parse_function(expr_str):
             raise ValueError(f"Error evaluasi f({x}): {err}")
     return f
 ```
-Mengubah string input jadi fungsi `f(x)`. `^` dikonversi ke `**`, error ekspresi ditangkap `try-except`.
+Mengubah string input jadi fungsi `f(x)`. `^` dikonversi ke `**`, error akan ke `try-except`.
 
 ```python
 def parse_value(val_str):
