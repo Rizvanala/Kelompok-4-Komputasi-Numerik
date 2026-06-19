@@ -1,9 +1,206 @@
-# METODE INTEGRASI ROMBERG
+## Metode Integrasi Romberg
 
 ---
 
+## Langkah-Langkah
+
+Input: fungsi `f(x)`, batas `a` dan `b`, ordo maksimum, dan toleransi. Program membangun tabel R(n,m) dengan dua rumus:
+
+**Langkah 1 — Trapezoidal bertingkat (kolom pertama):**
+```
+R(n, 0) = h/2 * [f(a) + 2*Σf(xi) + f(b)],   h = (b-a) / 2^n
+```
+
+**Langkah 2 — Ekstrapolasi Richardson (sisa tabel):**
+```
+R(n, m) = [4^m * R(n, m-1) - R(n-1, m-1)] / (4^m - 1)
+```
+
+Berhenti saat salah satu kondisi terpenuhi:
+- Toleransi: `|R(n,n) - R(n-1,n-1)| / |R(n,n)| < ε`
+- Ordo maksimum tercapai
+
 ---
 
+## Penjelasan Tiap Blok Kode
+
+---
+
+### IMPORT LIBRARY
+```python
+import math
+import sys
+```
+`math` untuk fungsi matematika, `sys` untuk hentikan program saat error fatal.
+
+---
+
+### NAMESPACE FUNGSI AMAN
+```python
+SAFE_NAMESPACE = {
+    "sin": math.sin, "cos": math.cos, "tan": math.tan,
+    "exp": math.exp, "log": math.log, "sqrt": math.sqrt,
+    "pi": math.pi, "e": math.e, ...
+}
+```
+Whitelist fungsi yang boleh dipakai `eval()` — input berbahaya dari user otomatis ditolak.
+
+---
+
+### DEFINISI FUNGSI DAN TRANSLATE INPUT
+```python
+def parse_function(expr_str):
+    expr = expr_str.replace("^", "**")
+    def f(x):
+        ns = dict(SAFE_NAMESPACE)
+        ns["x"] = x
+        try:
+            result = eval(expr, {"__builtins__": {}}, ns)
+            return float(result)
+        except Exception as err:
+            raise ValueError(f"Error evaluasi f({x}): {err}")
+    return f
+```
+Mengubah string input jadi fungsi `f(x)`. `^` dikonversi ke `**`, error ekspresi ditangkap `try-except`.
+
+```python
+def parse_value(val_str):
+    ns = dict(SAFE_NAMESPACE)
+    return float(eval(val_str.replace("^", "**"), {"__builtins__": {}}, ns))
+```
+Mengubah input batas jadi angka, mendukung ekspresi seperti `pi` atau `2*pi`.
+
+---
+
+### METODE TRAPEZOIDAL
+```python
+def trapezoidal(f, a, b, n):
+    h = (b - a) / n
+    total = f(a) + f(b)
+    for i in range(1, n):
+        total += 2.0 * f(a + i * h)
+    return (h / 2.0) * total
+```
+Trapezoidal standar, error `O(h²)`. Jadi dasar kolom pertama Romberg sekaligus pembanding di tabel akhir.
+
+---
+
+### METODE SIMPSON 1/3 DAN 3/8
+```python
+def simpson_1_3(f, a, b, n):   # n harus genap
+def simpson_3_8(f, a, b, n):   # n harus kelipatan 3
+```
+Hanya untuk tabel perbandingan. Error `O(h⁴)`, lebih akurat dari Trapezoidal tapi masih di bawah Romberg `O(h^(2n+2))`.
+
+---
+
+### ALGORITMA INTI — METODE ROMBERG
+```python
+def romberg(f, a, b, max_order=10, toleransi=1e-8):
+    R = []
+    jumlah_eval = 0
+    for n in range(max_order):
+        baris = [0.0] * (n + 1)
+        h = (b - a) / (2 ** n)
+```
+`R` tabel 2D yang tumbuh tiap iterasi. Tiap baris `n`, `h` dibagi dua sehingga subinterval berlipat ganda.
+
+**Kolom pertama R(n,0):**
+```python
+        if n == 0:
+            baris[0] = (h / 2.0) * (f(a) + f(b))
+        else:
+            baris[0] = 0.5 * R[n-1][0] + h * jumlah_baru
+```
+`n=0` pakai 2 titik saja. Baris berikutnya hanya hitung titik baru — titik lama tidak dihitung ulang, jauh lebih efisien.
+
+**Ekstrapolasi Richardson:**
+```python
+        for m in range(1, n + 1):
+            faktor = 4 ** m
+            baris[m] = (faktor * baris[m-1] - R[n-1][m-1]) / (faktor - 1)
+```
+Tiap kolom `m` mengeliminasi satu suku error. `m=1` setara Simpson `O(h⁴)`, `m=2` setara `O(h⁶)`, dst.
+
+**Cek konvergensi:**
+```python
+        if n >= 1:
+            error_rel = abs((R[n][n] - R[n-1][n-1]) / R[n][n])
+            if error_rel < toleransi:
+                return R, True, n, jumlah_eval
+```
+Berhenti otomatis saat selisih dua diagonal berturutan sudah di bawah toleransi.
+
+---
+
+### TABEL OUTPUT ROMBERG
+```python
+    header = f"  {'n':>3} | {'Subint':>7} | "
+    for m in range(n_final + 1):
+        header += f"{'m=' + str(m):>14}"
+```
+Cetak tabel R(n,m) lengkap. Nilai diagonal ditandai `[nilai]*` sebagai hasil terbaik tiap baris.
+
+---
+
+### TABEL KONVERGENSI
+```python
+    for n in range(n_final + 1):
+        val = R[n][n]
+        if n >= 1:
+            err = abs((val - val_lama) / val) * 100
+            status = "KONVERGEN ✓" if err < 0.001 else "iterasi..."
+```
+Tampilkan perubahan nilai diagonal `R(n,n)` tiap iterasi beserta error relatifnya.
+
+---
+
+### USER INTERFACE & INPUT VALIDASI
+```python
+def main():
+    while True:
+        expr = input("\n  Masukkan f(x) : ").strip()
+        if not expr:
+            print("  [!] Fungsi tidak boleh kosong.")
+            continue
+        f = parse_function(expr)
+        f(1.0)
+        break
+```
+Fungsi diuji dulu dengan `f(1.0)` sebelum masuk algoritma — error sintaks langsung ketahuan di sini.
+
+```python
+    try:
+        a = parse_value(input("  Batas bawah a  : ").strip())
+        b = parse_value(input("  Batas atas  b  : ").strip())
+        max_order = int(ordo_str) if ordo_str else 8
+        toleransi = float(tol_str) if tol_str else 1e-8
+    except ValueError:
+        print("  [!] Input tidak valid!")
+```
+Default ordo `8` dan toleransi `1e-8` jika tidak diisi. `try-except` tangkap input non-angka.
+
+---
+
+### FINAL EXECUTION & SIMPULAN
+```python
+    R, konvergen, n_final, jumlah_eval = romberg(f, a, b, max_order, toleransi)
+    hasil_akhir = R[n_final][n_final]
+
+    cetak_tabel_romberg(R, n_final)
+    cetak_konvergensi(R, n_final)
+    cetak_perbandingan(f, a, b, hasil_akhir, n_final)
+    cetak_hasil_akhir(hasil_akhir, a, b, n_final, jumlah_eval, konvergen, toleransi)
+```
+`romberg()` kembalikan tabel, status konvergensi, ordo terakhir, dan jumlah evaluasi. Hasil akhir dari `R[n_final][n_final]` — pojok kanan-bawah tabel, nilai paling akurat. Empat fungsi cetak tampilkan semua output secara berurutan.
+
+```python
+if __name__ == "__main__":
+    main()
+```
+`main()` hanya jalan saat file dieksekusi langsung, bukan saat di-import.
+
+---
 
 ## Contoh Output Program
 
