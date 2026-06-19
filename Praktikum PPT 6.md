@@ -8,12 +8,12 @@ Diawali dengan menginput bentuk fungsi, seperti contoh `f(x) = x**3 + 2*x**2 - x
 
 Kemudian dijalankan kode dengan menerapkan dua rumus utama:
 
-**Langkah 1 — Trapezoidal bertingkat (kolom pertama tabel):**
+**Langkah 1, Trapezoidal bertingkat (kolom pertama tabel):**
 ```
 R(n, 0) = h/2 * [f(a) + 2*Σf(xi) + f(b)]     dengan h = (b-a) / 2^n
 ```
 
-**Langkah 2 — Ekstrapolasi Richardson (mengisi sisa tabel):**
+**Langkah 2, Ekstrapolasi Richardson (isi sisa tabel):**
 ```
 R(n, m) = [4^m * R(n, m-1) - R(n-1, m-1)] / (4^m - 1)
 ```
@@ -45,7 +45,7 @@ SAFE_NAMESPACE = {
     "pi": math.pi, "e": math.e, ...
 }
 ```
-Kamus (dictionary) yang berisi semua nama fungsi matematika yang diizinkan. Ini digunakan sebagai "lingkungan aman" saat program mengevaluasi input string dari pengguna, sehingga pengguna tidak bisa menjalankan perintah berbahaya.
+Kamus (dictionary) yang berisi semua nama fungsi matematika yang ada. Ini digunakan sebagai "lingkungan aman" saat program mengevaluasi input string dari pengguna, sehingga pengguna tidak bisa menjalankan perintah berbahaya.
 
 ---
 
