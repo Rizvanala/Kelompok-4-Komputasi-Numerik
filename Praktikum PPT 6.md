@@ -2,25 +2,29 @@
 
 ---
 
+---
+
+## Metode Integrasi Romberg
+
+---
+
 ## Langkah-Langkah
 
-Diawali dengan menginput bentuk fungsi, seperti contoh `f(x) = x**3 + 2*x**2 - x + 1`, kemudian input batas bawah `a` dan batas atas `b`, lalu input ordo maksimum dan nilai toleransi.
+Input: fungsi `f(x)`, batas `a` dan `b`, ordo maksimum, dan toleransi. Program lalu membangun tabel R(n,m) menggunakan dua rumus:
 
-Kemudian dijalankan kode dengan menerapkan dua rumus utama:
-
-**Langkah 1, Trapezoidal bertingkat (kolom pertama tabel):**
+**Langkah 1 — Trapezoidal bertingkat (kolom pertama):**
 ```
-R(n, 0) = h/2 * [f(a) + 2*Σf(xi) + f(b)]     dengan h = (b-a) / 2^n
+R(n, 0) = h/2 * [f(a) + 2*Σf(xi) + f(b)],   h = (b-a) / 2^n
 ```
 
-**Langkah 2, Ekstrapolasi Richardson (isi sisa tabel):**
+**Langkah 2 — Ekstrapolasi Richardson (sisa tabel):**
 ```
 R(n, m) = [4^m * R(n, m-1) - R(n-1, m-1)] / (4^m - 1)
 ```
 
-Di setiap iterasi, baris baru tabel dihitung. Kolom pertama `R(n,0)` adalah nilai Trapezoidal dengan `2^n` subinterval, sedangkan kolom berikutnya `R(n,m)` adalah hasil ekstrapolasi yang semakin akurat. Proses ini diulang terus hingga memenuhi salah satu dari 2 kondisi, yakni:
-- Toleransi terpenuhi: `|R(n,n) - R(n-1,n-1)| / |R(n,n)| < ε`
-- Sudah mencapai batas ordo maksimum
+Proses berhenti saat salah satu kondisi terpenuhi:
+- Toleransi: `|R(n,n) - R(n-1,n-1)| / |R(n,n)| < ε`
+- Ordo maksimum tercapai
 
 ---
 
@@ -33,7 +37,7 @@ Di setiap iterasi, baris baru tabel dihitung. Kolom pertama `R(n,0)` adalah nila
 import math
 import sys
 ```
-Mengimpor library `math` untuk fungsi matematika standar seperti `sin`, `cos`, `exp`, `sqrt`, `pi`, dan `e`. Library `sys` digunakan untuk menghentikan program jika terjadi error fatal.
+`math` untuk fungsi matematika standar, `sys` untuk menghentikan program jika terjadi error fatal.
 
 ---
 
@@ -45,7 +49,7 @@ SAFE_NAMESPACE = {
     "pi": math.pi, "e": math.e, ...
 }
 ```
-Kamus (dictionary) yang berisi semua nama fungsi matematika yang ada. Ini digunakan sebagai "tempat aman" saat program mengevaluasi input string dari pengguna, sehingga pengguna tidak bisa menjalankan perintah berbahaya.
+Whitelist fungsi matematika yang diizinkan saat `eval()` memproses input user, agar input berbahaya tidak bisa dieksekusi.
 
 ---
 
@@ -63,16 +67,14 @@ def parse_function(expr_str):
             raise ValueError(f"Error evaluasi f({x}): {err}")
     return f
 ```
-- `expr_str.replace("^", "**")`: Mengganti notasi pangkat biasa `^` menjadi `**` agar bisa dibaca Python. Jadi pengguna bisa mengetik `x^3` atau `x**3`, keduanya diterima.
-- `eval(expr, ...)`: "Penerjemah". Tugasnya mengeksekusi string ekspresi matematika dengan nilai `x` tertentu. Blok `try-except` menangkap error jika fungsi tidak valid.
-- `return f`: Mengembalikan fungsi `f(x)` yang siap dipakai untuk memasukkan nilai angka, misalnya `f(2)` atau `f(3.14)`.
+Mengubah string input menjadi fungsi Python `f(x)`. Notasi `^` otomatis dikonversi ke `**`, dan `try-except` menangkap error jika ekspresi tidak valid.
 
 ```python
 def parse_value(val_str):
     ns = dict(SAFE_NAMESPACE)
     return float(eval(val_str.replace("^", "**"), {"__builtins__": {}}, ns))
 ```
-Berfungsi untuk mengevaluasi nilai batas `a` dan `b`. Pengguna bisa mengetik `pi` untuk π atau `2*pi` dan program akan menghitungnya dengan benar.
+Mengubah input batas menjadi angka — mendukung ekspresi seperti `pi` atau `2*pi`.
 
 ---
 
@@ -85,7 +87,7 @@ def trapezoidal(f, a, b, n):
         total += 2.0 * f(a + i * h)
     return (h / 2.0) * total
 ```
-Implementasi metode Trapezoidal standar dengan `n` subinterval. Fungsi ini dipakai dua kali: sebagai bagian dari algoritma Romberg (kolom pertama tabel), dan sebagai pembanding di tabel perbandingan akhir. Error orde `O(h²)`.
+Trapezoidal standar dengan `n` subinterval, error orde `O(h²)`. Dipakai sebagai dasar kolom pertama Romberg dan sebagai pembanding di tabel akhir.
 
 ---
 
@@ -94,7 +96,7 @@ Implementasi metode Trapezoidal standar dengan `n` subinterval. Fungsi ini dipak
 def simpson_1_3(f, a, b, n):   # n harus genap
 def simpson_3_8(f, a, b, n):   # n harus kelipatan 3
 ```
-Kedua fungsi ini hanya dipakai untuk **tabel perbandingan**, bukan bagian dari algoritma Romberg. Keduanya memiliki error orde `O(h⁴)`, lebih baik dari Trapezoidal tetapi masih di bawah Romberg yang bisa mencapai `O(h^(2n+2))`.
+Hanya untuk **tabel perbandingan**, bukan bagian algoritma Romberg. Error orde `O(h⁴)`, lebih akurat dari Trapezoidal tapi masih di bawah Romberg yang bisa mencapai `O(h^(2n+2))`.
 
 ---
 
@@ -103,38 +105,28 @@ Kedua fungsi ini hanya dipakai untuk **tabel perbandingan**, bukan bagian dari a
 def romberg(f, a, b, max_order=10, toleransi=1e-8):
     R = []
     jumlah_eval = 0
-
     for n in range(max_order):
         baris = [0.0] * (n + 1)
         h = (b - a) / (2 ** n)
 ```
-- `R = []`: Tabel Romberg disimpan sebagai list 2 dimensi yang tumbuh dinamis setiap iterasi.
-- `jumlah_eval`: Penghitung berapa kali fungsi `f(x)` dipanggil, untuk membuktikan efisiensi Romberg.
-- `h = (b - a) / 2^n`: Setiap baris `n`, ukuran langkah `h` dibagi dua, sehingga jumlah subinterval berlipat ganda.
+`R` adalah tabel 2D yang tumbuh dinamis. Setiap baris `n`, nilai `h` dibagi dua sehingga subinterval berlipat ganda.
 
-**Hitung kolom pertama R(n, 0) — Trapezoidal:**
+**Kolom pertama R(n,0) — Trapezoidal:**
 ```python
         if n == 0:
             baris[0] = (h / 2.0) * (f(a) + f(b))
-            jumlah_eval += 2
         else:
-            titik_lama = 2 ** (n - 1)
-            jumlah_baru = 0.0
-            for k in range(1, titik_lama + 1):
-                jumlah_baru += f(a + (2 * k - 1) * h)
-                jumlah_eval += 1
             baris[0] = 0.5 * R[n-1][0] + h * jumlah_baru
 ```
-- Baris `n=0`: Trapezoidal paling kasar, hanya 2 titik (ujung kiri dan kanan).
-- Baris `n≥1`: **Optimasi efisiensi** — titik-titik lama dari iterasi sebelumnya tidak dihitung ulang. Hanya titik-titik baru (titik ganjil) yang ditambahkan. Ini membuat total evaluasi `f(x)` jauh lebih sedikit.
+Baris `n=0` hanya pakai 2 titik. Baris berikutnya **tidak menghitung ulang titik lama** — hanya titik baru (titik ganjil) yang ditambahkan, sehingga jumlah evaluasi `f(x)` jauh lebih efisien.
 
-**Isi kolom berikutnya — Ekstrapolasi Richardson:**
+**Ekstrapolasi Richardson:**
 ```python
         for m in range(1, n + 1):
             faktor = 4 ** m
             baris[m] = (faktor * baris[m-1] - R[n-1][m-1]) / (faktor - 1)
 ```
-Ini adalah inti dari metode Romberg. Setiap kolom `m` mengeliminasi satu suku error dari kolom sebelumnya. Kolom `m=1` menghasilkan akurasi setara Simpson 1/3 `O(h⁴)`, kolom `m=2` setara `O(h⁶)`, dan seterusnya.
+Setiap kolom `m` mengeliminasi satu suku error. Kolom `m=1` setara Simpson `O(h⁴)`, `m=2` setara `O(h⁶)`, dst.
 
 **Cek konvergensi:**
 ```python
@@ -143,7 +135,7 @@ Ini adalah inti dari metode Romberg. Setiap kolom `m` mengeliminasi satu suku er
             if error_rel < toleransi:
                 return R, True, n, jumlah_eval
 ```
-Program berhenti otomatis begitu selisih antara dua nilai diagonal berturutan sudah lebih kecil dari toleransi. Ini menjamin hasil yang akurat tanpa iterasi berlebih.
+Berhenti otomatis saat selisih dua diagonal berturutan sudah di bawah toleransi.
 
 ---
 
@@ -153,7 +145,7 @@ Program berhenti otomatis begitu selisih antara dua nilai diagonal berturutan su
     for m in range(n_final + 1):
         header += f"{'m=' + str(m):>14}"
 ```
-Untuk user interface (UI). Mencetak tabel `R(n,m)` dengan kolom `n` (baris), `Subint` (jumlah subinterval = `2^n`), dan setiap kolom `m`. Nilai diagonal ditandai dengan kurung `[nilai]*` untuk memudahkan pembacaan hasil ekstrapolasi terbaik.
+Mencetak tabel `R(n,m)` lengkap. Nilai diagonal ditandai `[nilai]*` sebagai penanda hasil terbaik tiap baris.
 
 ---
 
@@ -165,7 +157,7 @@ Untuk user interface (UI). Mencetak tabel `R(n,m)` dengan kolom `n` (baris), `Su
             err = abs((val - val_lama) / val) * 100
             status = "KONVERGEN ✓" if err < 0.001 else "iterasi..."
 ```
-Mencetak bagaimana nilai diagonal `R(n,n)` berubah di setiap iterasi beserta persentase error relatifnya. Ini membuktikan secara visual bahwa Romberg konvergen dengan sangat cepat dibanding metode lain.
+Menampilkan perubahan nilai diagonal `R(n,n)` tiap iterasi beserta error relatifnya, membuktikan Romberg konvergen sangat cepat.
 
 ---
 
@@ -181,9 +173,8 @@ def main():
         f(1.0)   # uji apakah fungsi valid
         break
 ```
-Tempat user memberikan input. Jika user tidak memberikan input (hanya enter), keluar peringatan. Program juga menguji fungsi dengan memanggil `f(1.0)` — jika ada error sintaks, langsung ditangkap di sini sebelum masuk algoritma.
+Input user divalidasi: fungsi diuji dengan `f(1.0)` sebelum masuk algoritma agar error sintaks tertangkap lebih awal.
 
-**4 inputan user: fungsi, batas bawah, batas atas, ordo, dan toleransi:**
 ```python
     try:
         a = parse_value(input("  Batas bawah a  : ").strip())
@@ -193,9 +184,7 @@ Tempat user memberikan input. Jika user tidak memberikan input (hanya enter), ke
     except ValueError:
         print("  [!] Input tidak valid!")
 ```
-- `parse_value()` mengubah input teks (termasuk `pi`, `2*pi`, dll) menjadi angka desimal.
-- `int()` dan `float()` untuk konversi tipe data.
-- Blok `try-except ValueError` berjaga-jaga jika user memasukkan huruf saat diminta angka.
+Nilai default ordo `8` dan toleransi `1e-8` dipakai jika user tidak mengisi. `try-except` menangkap input non-angka.
 
 ---
 
@@ -209,15 +198,13 @@ Tempat user memberikan input. Jika user tidak memberikan input (hanya enter), ke
     cetak_perbandingan(f, a, b, hasil_akhir, n_final)
     cetak_hasil_akhir(hasil_akhir, a, b, n_final, jumlah_eval, konvergen, toleransi)
 ```
-- `romberg(...)` mengembalikan 4 nilai: tabel `R`, status konvergensi, ordo terakhir, dan jumlah evaluasi.
-- `R[n_final][n_final]`: Mengambil nilai pojok kanan-bawah tabel sebagai hasil akhir (nilai paling akurat).
-- Empat fungsi cetak dipanggil berurutan untuk menampilkan tabel Romberg, konvergensi, perbandingan metode, dan kesimpulan akhir.
+`romberg()` mengembalikan tabel, status konvergensi, ordo terakhir, dan jumlah evaluasi. Hasil akhir diambil dari `R[n_final][n_final]` — pojok kanan-bawah tabel, nilai paling akurat. Empat fungsi cetak dipanggil berurutan untuk menampilkan semua output.
 
 ```python
 if __name__ == "__main__":
     main()
 ```
-Memastikan fungsi `main()` hanya dijalankan jika file ini dieksekusi langsung, bukan saat di-import sebagai modul.
+`main()` hanya berjalan saat file dieksekusi langsung, bukan saat di-import sebagai modul.
 
 ---
 
