@@ -6,12 +6,12 @@
 
 Input: fungsi `f(x)`, batas `a` dan `b`, ordo maksimum, dan toleransi. Program membangun tabel R(n,m) dengan dua rumus:
 
-**Langkah 1 — Trapezoidal bertingkat (kolom pertama):**
+**Langkah 1, Trapezoidal bertingkat (kolom pertama):**
 ```
 R(n, 0) = h/2 * [f(a) + 2*Σf(xi) + f(b)],   h = (b-a) / 2^n
 ```
 
-**Langkah 2 — Ekstrapolasi Richardson (sisa tabel):**
+**Langkah 2, Ekstrapolasi Richardson (sisa tabel):**
 ```
 R(n, m) = [4^m * R(n, m-1) - R(n-1, m-1)] / (4^m - 1)
 ```
@@ -43,7 +43,7 @@ SAFE_NAMESPACE = {
     "pi": math.pi, "e": math.e, ...
 }
 ```
-Whitelist fungsi yang boleh dipakai `eval()` — input berbahaya dari user otomatis ditolak.
+Whitelist fungsi yang boleh dipakai `eval()`, input berbahaya dari user otomatis ditolak.
 
 ---
 
@@ -68,11 +68,11 @@ def parse_value(val_str):
     ns = dict(SAFE_NAMESPACE)
     return float(eval(val_str.replace("^", "**"), {"__builtins__": {}}, ns))
 ```
-Mengubah input batas jadi angka, mendukung ekspresi seperti `pi` atau `2*pi`.
+Mengubah input batas jadi angka, mendukung tanda seperti `pi` atau `2*pi`.
 
 ---
 
-### METODE TRAPEZOIDAL
+### METODE | TRAPEZOIDAL
 ```python
 def trapezoidal(f, a, b, n):
     h = (b - a) / n
@@ -85,7 +85,7 @@ Trapezoidal standar, error `O(h²)`. Jadi dasar kolom pertama Romberg sekaligus 
 
 ---
 
-### METODE SIMPSON 1/3 DAN 3/8
+### METODE | SIMPSON 1/3 DAN 3/8
 ```python
 def simpson_1_3(f, a, b, n):   # n harus genap
 def simpson_3_8(f, a, b, n):   # n harus kelipatan 3
@@ -94,7 +94,7 @@ Hanya untuk tabel perbandingan. Error `O(h⁴)`, lebih akurat dari Trapezoidal t
 
 ---
 
-### ALGORITMA INTI — METODE ROMBERG
+### ALGORITMA INTI | METODE ROMBERG
 ```python
 def romberg(f, a, b, max_order=10, toleransi=1e-8):
     R = []
@@ -112,7 +112,7 @@ def romberg(f, a, b, max_order=10, toleransi=1e-8):
         else:
             baris[0] = 0.5 * R[n-1][0] + h * jumlah_baru
 ```
-`n=0` pakai 2 titik saja. Baris berikutnya hanya hitung titik baru — titik lama tidak dihitung ulang, jauh lebih efisien.
+`n=0` pakai 2 titik saja. Baris berikutnya hanya hitung titik baru, titik lama tidak dihitung ulang. Jadi jauh lebih efisien.
 
 **Ekstrapolasi Richardson:**
 ```python
@@ -133,7 +133,7 @@ Berhenti otomatis saat selisih dua diagonal berturutan sudah di bawah toleransi.
 
 ---
 
-### TABEL OUTPUT ROMBERG
+### TABEL | OUTPUT ROMBERG
 ```python
     header = f"  {'n':>3} | {'Subint':>7} | "
     for m in range(n_final + 1):
@@ -143,7 +143,7 @@ Cetak tabel R(n,m) lengkap. Nilai diagonal ditandai `[nilai]*` sebagai hasil ter
 
 ---
 
-### TABEL KONVERGENSI
+### TABEL | KONVERGENSI
 ```python
     for n in range(n_final + 1):
         val = R[n][n]
@@ -167,7 +167,7 @@ def main():
         f(1.0)
         break
 ```
-Fungsi diuji dulu dengan `f(1.0)` sebelum masuk algoritma — error sintaks langsung ketahuan di sini.
+Fungsi diuji dulu dengan `f(1.0)` sebelum masuk algoritma, error sintaks langsung ketahuan di sini.
 
 ```python
     try:
@@ -182,7 +182,7 @@ Default ordo `8` dan toleransi `1e-8` jika tidak diisi. `try-except` tangkap inp
 
 ---
 
-### FINAL EXECUTION & SIMPULAN
+### FINAL | EXECUTION & SIMPULAN
 ```python
     R, konvergen, n_final, jumlah_eval = romberg(f, a, b, max_order, toleransi)
     hasil_akhir = R[n_final][n_final]
@@ -192,7 +192,7 @@ Default ordo `8` dan toleransi `1e-8` jika tidak diisi. `try-except` tangkap inp
     cetak_perbandingan(f, a, b, hasil_akhir, n_final)
     cetak_hasil_akhir(hasil_akhir, a, b, n_final, jumlah_eval, konvergen, toleransi)
 ```
-`romberg()` kembalikan tabel, status konvergensi, ordo terakhir, dan jumlah evaluasi. Hasil akhir dari `R[n_final][n_final]` — pojok kanan-bawah tabel, nilai paling akurat. Empat fungsi cetak tampilkan semua output secara berurutan.
+`romberg()` kembalikan tabel, status konvergensi, ordo terakhir, dan jumlah evaluasi. Hasil akhir dari `R[n_final][n_final]`, pojok kanan-bawah tabel, nilai paling akurat. Empat fungsi cetak semua output secara berurutan.
 
 ```python
 if __name__ == "__main__":
