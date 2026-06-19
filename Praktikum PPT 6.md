@@ -45,7 +45,7 @@ SAFE_NAMESPACE = {
     "pi": math.pi, "e": math.e, ...
 }
 ```
-Kamus (dictionary) yang berisi semua nama fungsi matematika yang ada. Ini digunakan sebagai "lingkungan aman" saat program mengevaluasi input string dari pengguna, sehingga pengguna tidak bisa menjalankan perintah berbahaya.
+Kamus (dictionary) yang berisi semua nama fungsi matematika yang ada. Ini digunakan sebagai "tempat aman" saat program mengevaluasi input string dari pengguna, sehingga pengguna tidak bisa menjalankan perintah berbahaya.
 
 ---
 
